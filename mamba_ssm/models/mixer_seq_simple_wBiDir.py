@@ -2,22 +2,19 @@
 
 import math
 from functools import partial
+from typing import Union
 
 from collections import namedtuple
 
 import torch
 import torch.nn as nn
-
 from mamba_ssm.modules.mamba_simple import Mamba, Block
 from mamba_ssm.utils.generation import GenerationMixin
 from mamba_ssm.utils.hf import load_config_hf, load_state_dict_hf
-
 try:
     from mamba_ssm.ops.triton.layernorm import RMSNorm, layer_norm_fn, rms_norm_fn
 except ImportError:
     RMSNorm, layer_norm_fn, rms_norm_fn = None, None, None
-
-
 def create_block(
     d_model,
     ssm_cfg=None,
@@ -45,8 +42,6 @@ def create_block(
     )
     block.layer_idx = layer_idx
     return block
-
-
 # https://github.com/huggingface/transformers/blob/c28d04e9e252a1a099944e325685f14d242ecdcd/src/transformers/models/gpt2/modeling_gpt2.py#L454
 def _init_weights(
     module,
@@ -61,7 +56,6 @@ def _init_weights(
                 nn.init.zeros_(module.bias)
     elif isinstance(module, nn.Embedding):
         nn.init.normal_(module.weight, std=initializer_range)
-
     if rescale_prenorm_residual:
         # Reinitialize selected weights subject to the OpenAI GPT-2 Paper Scheme:
         #   > A modified initialization which accounts for the accumulation on the residual path with model depth. Scale
@@ -78,8 +72,6 @@ def _init_weights(
                 nn.init.kaiming_uniform_(p, a=math.sqrt(5))
                 with torch.no_grad():
                     p /= math.sqrt(n_residuals_per_layer * n_layer)
-
-
 class MixerModel(nn.Module):
     def __init__(
         self,
@@ -98,9 +90,7 @@ class MixerModel(nn.Module):
         factory_kwargs = {"device": device, "dtype": dtype}
         super().__init__()
         self.residual_in_fp32 = residual_in_fp32
-
         self.embedding = nn.Embedding(vocab_size, d_model, **factory_kwargs)
-
         # We change the order of residual and layer norm:
         # Instead of LN -> Attn / MLP -> Add, we do:
         # Add -> LN -> Attn / MLP / Mixer, returning both the residual branch (output of Add) and
@@ -110,7 +100,6 @@ class MixerModel(nn.Module):
         if self.fused_add_norm:
             if layer_norm_fn is None or rms_norm_fn is None:
                 raise ImportError("Failed to import Triton LayerNorm / RMSNorm kernels")
-
         self.layers = nn.ModuleList(
             [
                 create_block(
@@ -126,11 +115,9 @@ class MixerModel(nn.Module):
                 for i in range(n_layer)
             ]
         )
-
         self.norm_f = (nn.LayerNorm if not rms_norm else RMSNorm)(
             d_model, eps=norm_epsilon, **factory_kwargs
         )
-
         self.apply(
             partial(
                 _init_weights,
@@ -138,13 +125,11 @@ class MixerModel(nn.Module):
                 **(initializer_cfg if initializer_cfg is not None else {}),
             )
         )
-
     def allocate_inference_cache(self, batch_size, max_seqlen, dtype=None, **kwargs):
         return {
             i: layer.allocate_inference_cache(batch_size, max_seqlen, dtype=dtype, **kwargs)
             for i, layer in enumerate(self.layers)
         }
-
     def forward(self, input_ids, inference_params=None):
         hidden_states = self.embedding(input_ids)
         residual = None
@@ -168,10 +153,7 @@ class MixerModel(nn.Module):
                 residual_in_fp32=self.residual_in_fp32,
             )
         return hidden_states
-
-
 class MambaLMHeadModel(nn.Module, GenerationMixin):
-
     def __init__(
         self,
         d_model: int,
@@ -179,12 +161,20 @@ class MambaLMHeadModel(nn.Module, GenerationMixin):
         vocab_size: int,
         initializer_cfg=None,
         pad_vocab_size_multiple: int = 1,
+        bidirectional: bool = False,
+        bidirectional_strategy: Union[str, None] = None,
         device=None,
         dtype=None,
         **backbone_kwargs,
     ) -> None:
         factory_kwargs = {"device": device, "dtype": dtype}
         super().__init__()
+        if bidirectional and bidirectional_strategy not in ["add", "concat", "ew_multiply"]:
+            raise NotImplementedError(f"{bidirectional_strategy} strategy for bi-directionality is not implemented!")
+        if bidirectional and bidirectional_strategy is None:
+            bidirectional_strategy = "add"  # Default strategy: `add`
+        self.bidirectional = bidirectional
+        self.bidirectional_strategy = bidirectional_strategy
         if vocab_size % pad_vocab_size_multiple != 0:
             vocab_size += pad_vocab_size_multiple - (vocab_size % pad_vocab_size_multiple)
         self.backbone = MixerModel(
@@ -196,6 +186,10 @@ class MambaLMHeadModel(nn.Module, GenerationMixin):
             **factory_kwargs,
         )
         self.lm_head = nn.Linear(d_model, vocab_size, bias=False, **factory_kwargs)
+        if bidirectional and bidirectional_strategy == "concat":
+            self.lm_head = nn.Linear(d_model * 2, vocab_size, bias=False, **factory_kwargs)
+        else:
+            self.lm_head = nn.Linear(d_model, vocab_size, bias=False, **factory_kwargs)
 
         # Initialize weights and apply final processing
         self.apply(
@@ -206,11 +200,16 @@ class MambaLMHeadModel(nn.Module, GenerationMixin):
             )
         )
         self.tie_weights()
+        # For bi-directionality using the `concat` strategy, we cannot tie weights since concatenation doubles d_model
+        if not bidirectional or bidirectional_strategy != "concat":
+            self.tie_weights()
 
     def tie_weights(self):
         self.lm_head.weight = self.backbone.embedding.weight
 
     def allocate_inference_cache(self, batch_size, max_seqlen, dtype=None, **kwargs):
+        if self.bidirectional:
+            return self.backbone.allocate_inference_cache(batch_size, max_seqlen * 2, dtype=dtype, **kwargs)
         return self.backbone.allocate_inference_cache(batch_size, max_seqlen, dtype=dtype, **kwargs)
 
     def forward(self, input_ids, position_ids=None, inference_params=None, num_last_tokens=0):
@@ -219,11 +218,25 @@ class MambaLMHeadModel(nn.Module, GenerationMixin):
         num_last_tokens: if > 0, only return the logits for the last n tokens
         """
         hidden_states = self.backbone(input_ids, inference_params=inference_params)
+        if self.bidirectional:
+            # input_ids assumed to have shape (B, L, N), so we flip along dims=1
+            hidden_states_rev = self.backbone(
+                input_ids.flip(dims=(1,)),  # Flip along the sequence length dimension
+                inference_params=inference_params
+            ).flip(dims=(1,))  # Flip back for combining with forward hidden states
+            if self.bidirectional_strategy == "add":
+                hidden_states = hidden_states + hidden_states_rev
+            elif self.bidirectional_strategy == "concat":
+                hidden_states = torch.cat([hidden_states, hidden_states_rev], dim=-1)
+            elif self.bidirectional_strategy == "ew_multiply":  # i.e., element-wise product
+                hidden_states = hidden_states * hidden_states_rev
         if num_last_tokens > 0:
             hidden_states = hidden_states[:, -num_last_tokens:]
         lm_logits = self.lm_head(hidden_states)
         CausalLMOutput = namedtuple("CausalLMOutput", ["logits"])
         return CausalLMOutput(logits=lm_logits)
+        LMOutput = namedtuple("LMOutput", ["logits"])
+        return LMOutput(logits=lm_logits)
 
     @classmethod
     def from_pretrained(cls, pretrained_model_name, device=None, dtype=None, **kwargs):
