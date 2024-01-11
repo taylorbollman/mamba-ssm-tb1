@@ -1,0 +1,109 @@
+qpmgs 2024-01-11T04:18:03.281Z  INFO | Repository Revision: a7bdd41af90ca0cc4ecfbd967e2ec28f1954b915
+qpmgs 2024-01-11T04:18:03.281Z  INFO | Used configuration:
+qpmgs 2024-01-11T04:18:03.281Z  INFO | Start loading image artifacts from huggingface.co
+qpmgs 2024-01-11T04:18:03.281Z  INFO | Repository ID: state-spaces/mamba-2.8b-slimpj
+qpmgs 2024-01-11T04:18:03.326Z  INFO | Ignore regex pattern for files, which are not downloaded: *openvino*, rust*, flax*, *ckpt, *tar.gz, *onnx*, tf*, *safetensors, *tflite, *mlmodel
+qpmgs 2024-01-11T04:18:40.012Z Token is valid.
+qpmgs 2024-01-11T04:18:40.012Z Token will not been saved to git credential helper. Pass `add_to_git_credential=True` if you want to set the git credential as well.
+qpmgs 2024-01-11T04:18:40.214Z Your token has been saved to /root/.cache/huggingface/token
+qpmgs 2024-01-11T04:18:40.418Z Login successful
+qpmgs 2024-01-11T04:21:29.661Z 2024-01-11 04:21:29,661 | INFO | No custom pipeline found at /repository/handler.py
+qpmgs 2024-01-11T04:21:29.661Z 2024-01-11 04:21:29,661 | INFO | Using device GPU
+qpmgs 2024-01-11T04:21:29.661Z 2024-01-11 04:21:29,661 | INFO | Initializing model from directory:/repository
+qpmgs 2024-01-11T04:21:29.662Z 
+qpmgs 2024-01-11T04:21:29.662Z ValueError: Unrecognized model in /repository. Should have a `model_type` key in its config.json, or contain one of the following strings in its name: albert, align, altclip, audio-spectrogram-transformer, autoformer, bark, bart, beit, bert, bert-generation, big_bird, bigbird_pegasus, biogpt, bit, blenderbot, blenderbot-small, blip, blip-2, bloom, bridgetower, camembert, canine, chinese_clip, clap, clip, clipseg, codegen, conditional_detr, convbert, convnext, convnextv2, cpmant, ctrl, cvt, data2vec-audio, data2vec-text, data2vec-vision, deberta, deberta-v2, decision_transformer, deformable_detr, deit, deta, detr, dinat, distilbert, donut-swin, dpr, dpt, efficientformer, efficientnet, electra, encodec, encoder-decoder, ernie, ernie_m, esm, falcon, flaubert, flava, fnet, focalnet, fsmt, funnel, git, glpn, gpt-sw3, gpt2, gpt_bigcode, gpt_neo, gpt_neox, gpt_neox_japanese, gptj, gptsan-japanese, graphormer, groupvit, hubert, ibert, imagegpt, informer, instructblip, jukebox, layoutlm, layoutlmv2, layoutlmv3, led, levit, lilt, llama, longformer, longt5, luke, lxmert, m2m_100, marian, markuplm, mask2former, maskformer, maskformer-swin, mbart, mctct, mega, megatron-bert, mgp-str, mobilebert, mobilenet_v1, mobilenet_v2, mobilevit, mobilevitv2, mpnet, mra, mt5, musicgen, mvp, nat, nezha, nllb-moe, nystromformer, oneformer, open-llama, openai-gpt, opt, owlvit, pegasus, pegasus_x, perceiver, pix2struct, plbart, poolformer, prophetnet, qdqbert, rag, realm, reformer, regnet, rembert, resnet, retribert, roberta, roberta-prelayernorm, roc_bert, roformer, rwkv, sam, segformer, sew, sew-d, speech-encoder-decoder, speech_to_text, speech_to_text_2, speecht5, splinter, squeezebert, swiftformer, swin, swin2sr, swinv2, switch_transformers, t5, table-transformer, tapas, time_series_transformer, timesformer, timm_backbone, trajectory_transformer, transfo-xl, trocr, tvlt, umt5, unispeech, unispeech-sat, upernet, van, videomae, vilt, vision-encoder-decoder, vision-text-dual-encoder, visual_bert, vit, vit_hybrid, vit_mae, vit_msn, vivit, wav2vec2, wav2vec2-conformer, wavlm, whisper, xclip, xglm, xlm, xlm-prophetnet, xlm-roberta, xlm-roberta-xl, xlnet, xmod, yolos, yoso
+qpmgs 2024-01-11T04:21:29.662Z     raise ValueError(
+qpmgs 2024-01-11T04:21:29.662Z     self.pipeline = get_pipeline(model_dir=model_dir, task=task)
+qpmgs 2024-01-11T04:21:29.662Z     await self._router.startup()
+qpmgs 2024-01-11T04:21:29.662Z     async with self.lifespan_context(app) as maybe_state:
+qpmgs 2024-01-11T04:21:29.662Z   File "/opt/conda/lib/python3.9/site-packages/starlette/routing.py", line 705, in lifespan
+qpmgs 2024-01-11T04:21:29.662Z Traceback (most recent call last):
+qpmgs 2024-01-11T04:21:29.662Z Application startup failed. Exiting.
+qpmgs 2024-01-11T04:21:29.662Z     config = AutoConfig.from_pretrained(model, _from_pipeline=task, **hub_kwargs, **model_kwargs)
+qpmgs 2024-01-11T04:21:29.662Z     hf_pipeline = pipeline(task=task, model=model_dir, device=device, **kwargs)
+qpmgs 2024-01-11T04:21:29.662Z   File "/app/huggingface_inference_toolkit/handler.py", line 17, in __init__
+qpmgs 2024-01-11T04:21:29.662Z   File "/app/huggingface_inference_toolkit/handler.py", line 45, in get_inference_handler_either_custom_or_default_handler
+qpmgs 2024-01-11T04:21:29.662Z     await handler()
+qpmgs 2024-01-11T04:21:29.662Z   File "/opt/conda/lib/python3.9/site-packages/starlette/routing.py", line 682, in startup
+qpmgs 2024-01-11T04:21:29.662Z   File "/opt/conda/lib/python3.9/site-packages/transformers/pipelines/__init__.py", line 705, in pipeline
+qpmgs 2024-01-11T04:21:29.662Z     inference_handler = get_inference_handler_either_custom_or_default_handler(HF_MODEL_DIR, task=HF_TASK)
+qpmgs 2024-01-11T04:21:29.662Z   File "/opt/conda/lib/python3.9/site-packages/starlette/routing.py", line 584, in __aenter__
+qpmgs 2024-01-11T04:21:29.662Z   File "/opt/conda/lib/python3.9/site-packages/transformers/models/auto/configuration_auto.py", line 1007, in from_pretrained
+qpmgs 2024-01-11T04:21:29.662Z   File "/app/huggingface_inference_toolkit/utils.py", line 261, in get_pipeline
+qpmgs 2024-01-11T04:21:29.662Z     return HuggingFaceHandler(model_dir=model_dir, task=task)
+qpmgs 2024-01-11T04:21:29.662Z   File "/app/webservice_starlette.py", line 57, in some_startup_task
+qpmgs 2024-01-11T04:21:32.390Z 2024-01-11 04:21:32,390 | INFO | Initializing model from directory:/repository
+qpmgs 2024-01-11T04:21:32.390Z 2024-01-11 04:21:32,390 | INFO | Using device GPU
+qpmgs 2024-01-11T04:21:32.390Z 2024-01-11 04:21:32,390 | INFO | No custom pipeline found at /repository/handler.py
+qpmgs 2024-01-11T04:21:32.391Z   File "/opt/conda/lib/python3.9/site-packages/starlette/routing.py", line 682, in startup
+qpmgs 2024-01-11T04:21:32.391Z     config = AutoConfig.from_pretrained(model, _from_pipeline=task, **hub_kwargs, **model_kwargs)
+qpmgs 2024-01-11T04:21:32.391Z     self.pipeline = get_pipeline(model_dir=model_dir, task=task)
+qpmgs 2024-01-11T04:21:32.391Z   File "/app/huggingface_inference_toolkit/handler.py", line 45, in get_inference_handler_either_custom_or_default_handler
+qpmgs 2024-01-11T04:21:32.391Z   File "/app/huggingface_inference_toolkit/handler.py", line 17, in __init__
+qpmgs 2024-01-11T04:21:32.391Z   File "/app/webservice_starlette.py", line 57, in some_startup_task
+qpmgs 2024-01-11T04:21:32.391Z     hf_pipeline = pipeline(task=task, model=model_dir, device=device, **kwargs)
+qpmgs 2024-01-11T04:21:32.391Z     async with self.lifespan_context(app) as maybe_state:
+qpmgs 2024-01-11T04:21:32.391Z   File "/opt/conda/lib/python3.9/site-packages/starlette/routing.py", line 705, in lifespan
+qpmgs 2024-01-11T04:21:32.391Z 
+qpmgs 2024-01-11T04:21:32.391Z     inference_handler = get_inference_handler_either_custom_or_default_handler(HF_MODEL_DIR, task=HF_TASK)
+qpmgs 2024-01-11T04:21:32.391Z     await self._router.startup()
+qpmgs 2024-01-11T04:21:32.391Z ValueError: Unrecognized model in /repository. Should have a `model_type` key in its config.json, or contain one of the following strings in its name: albert, align, altclip, audio-spectrogram-transformer, autoformer, bark, bart, beit, bert, bert-generation, big_bird, bigbird_pegasus, biogpt, bit, blenderbot, blenderbot-small, blip, blip-2, bloom, bridgetower, camembert, canine, chinese_clip, clap, clip, clipseg, codegen, conditional_detr, convbert, convnext, convnextv2, cpmant, ctrl, cvt, data2vec-audio, data2vec-text, data2vec-vision, deberta, deberta-v2, decision_transformer, deformable_detr, deit, deta, detr, dinat, distilbert, donut-swin, dpr, dpt, efficientformer, efficientnet, electra, encodec, encoder-decoder, ernie, ernie_m, esm, falcon, flaubert, flava, fnet, focalnet, fsmt, funnel, git, glpn, gpt-sw3, gpt2, gpt_bigcode, gpt_neo, gpt_neox, gpt_neox_japanese, gptj, gptsan-japanese, graphormer, groupvit, hubert, ibert, imagegpt, informer, instructblip, jukebox, layoutlm, layoutlmv2, layoutlmv3, led, levit, lilt, llama, longformer, longt5, luke, lxmert, m2m_100, marian, markuplm, mask2former, maskformer, maskformer-swin, mbart, mctct, mega, megatron-bert, mgp-str, mobilebert, mobilenet_v1, mobilenet_v2, mobilevit, mobilevitv2, mpnet, mra, mt5, musicgen, mvp, nat, nezha, nllb-moe, nystromformer, oneformer, open-llama, openai-gpt, opt, owlvit, pegasus, pegasus_x, perceiver, pix2struct, plbart, poolformer, prophetnet, qdqbert, rag, realm, reformer, regnet, rembert, resnet, retribert, roberta, roberta-prelayernorm, roc_bert, roformer, rwkv, sam, segformer, sew, sew-d, speech-encoder-decoder, speech_to_text, speech_to_text_2, speecht5, splinter, squeezebert, swiftformer, swin, swin2sr, swinv2, switch_transformers, t5, table-transformer, tapas, time_series_transformer, timesformer, timm_backbone, trajectory_transformer, transfo-xl, trocr, tvlt, umt5, unispeech, unispeech-sat, upernet, van, videomae, vilt, vision-encoder-decoder, vision-text-dual-encoder, visual_bert, vit, vit_hybrid, vit_mae, vit_msn, vivit, wav2vec2, wav2vec2-conformer, wavlm, whisper, xclip, xglm, xlm, xlm-prophetnet, xlm-roberta, xlm-roberta-xl, xlnet, xmod, yolos, yoso
+qpmgs 2024-01-11T04:21:32.391Z   File "/opt/conda/lib/python3.9/site-packages/transformers/pipelines/__init__.py", line 705, in pipeline
+qpmgs 2024-01-11T04:21:32.391Z   File "/opt/conda/lib/python3.9/site-packages/starlette/routing.py", line 584, in __aenter__
+qpmgs 2024-01-11T04:21:32.391Z     return HuggingFaceHandler(model_dir=model_dir, task=task)
+qpmgs 2024-01-11T04:21:32.391Z Application startup failed. Exiting.
+qpmgs 2024-01-11T04:21:32.391Z   File "/opt/conda/lib/python3.9/site-packages/transformers/models/auto/configuration_auto.py", line 1007, in from_pretrained
+qpmgs 2024-01-11T04:21:32.391Z   File "/app/huggingface_inference_toolkit/utils.py", line 261, in get_pipeline
+qpmgs 2024-01-11T04:21:32.391Z Traceback (most recent call last):
+qpmgs 2024-01-11T04:21:32.391Z     raise ValueError(
+qpmgs 2024-01-11T04:21:32.391Z     await handler()
+qpmgs 2024-01-11T04:21:50.418Z 2024-01-11 04:21:50,418 | INFO | Initializing model from directory:/repository
+qpmgs 2024-01-11T04:21:50.418Z 2024-01-11 04:21:50,418 | INFO | Using device GPU
+qpmgs 2024-01-11T04:21:50.418Z 2024-01-11 04:21:50,418 | INFO | No custom pipeline found at /repository/handler.py
+qpmgs 2024-01-11T04:21:50.419Z ValueError: Unrecognized model in /repository. Should have a `model_type` key in its config.json, or contain one of the following strings in its name: albert, align, altclip, audio-spectrogram-transformer, autoformer, bark, bart, beit, bert, bert-generation, big_bird, bigbird_pegasus, biogpt, bit, blenderbot, blenderbot-small, blip, blip-2, bloom, bridgetower, camembert, canine, chinese_clip, clap, clip, clipseg, codegen, conditional_detr, convbert, convnext, convnextv2, cpmant, ctrl, cvt, data2vec-audio, data2vec-text, data2vec-vision, deberta, deberta-v2, decision_transformer, deformable_detr, deit, deta, detr, dinat, distilbert, donut-swin, dpr, dpt, efficientformer, efficientnet, electra, encodec, encoder-decoder, ernie, ernie_m, esm, falcon, flaubert, flava, fnet, focalnet, fsmt, funnel, git, glpn, gpt-sw3, gpt2, gpt_bigcode, gpt_neo, gpt_neox, gpt_neox_japanese, gptj, gptsan-japanese, graphormer, groupvit, hubert, ibert, imagegpt, informer, instructblip, jukebox, layoutlm, layoutlmv2, layoutlmv3, led, levit, lilt, llama, longformer, longt5, luke, lxmert, m2m_100, marian, markuplm, mask2former, maskformer, maskformer-swin, mbart, mctct, mega, megatron-bert, mgp-str, mobilebert, mobilenet_v1, mobilenet_v2, mobilevit, mobilevitv2, mpnet, mra, mt5, musicgen, mvp, nat, nezha, nllb-moe, nystromformer, oneformer, open-llama, openai-gpt, opt, owlvit, pegasus, pegasus_x, perceiver, pix2struct, plbart, poolformer, prophetnet, qdqbert, rag, realm, reformer, regnet, rembert, resnet, retribert, roberta, roberta-prelayernorm, roc_bert, roformer, rwkv, sam, segformer, sew, sew-d, speech-encoder-decoder, speech_to_text, speech_to_text_2, speecht5, splinter, squeezebert, swiftformer, swin, swin2sr, swinv2, switch_transformers, t5, table-transformer, tapas, time_series_transformer, timesformer, timm_backbone, trajectory_transformer, transfo-xl, trocr, tvlt, umt5, unispeech, unispeech-sat, upernet, van, videomae, vilt, vision-encoder-decoder, vision-text-dual-encoder, visual_bert, vit, vit_hybrid, vit_mae, vit_msn, vivit, wav2vec2, wav2vec2-conformer, wavlm, whisper, xclip, xglm, xlm, xlm-prophetnet, xlm-roberta, xlm-roberta-xl, xlnet, xmod, yolos, yoso
+qpmgs 2024-01-11T04:21:50.419Z     return HuggingFaceHandler(model_dir=model_dir, task=task)
+qpmgs 2024-01-11T04:21:50.419Z     inference_handler = get_inference_handler_either_custom_or_default_handler(HF_MODEL_DIR, task=HF_TASK)
+qpmgs 2024-01-11T04:21:50.419Z   File "/app/webservice_starlette.py", line 57, in some_startup_task
+qpmgs 2024-01-11T04:21:50.419Z     async with self.lifespan_context(app) as maybe_state:
+qpmgs 2024-01-11T04:21:50.419Z   File "/opt/conda/lib/python3.9/site-packages/starlette/routing.py", line 705, in lifespan
+qpmgs 2024-01-11T04:21:50.419Z Traceback (most recent call last):
+qpmgs 2024-01-11T04:21:50.419Z     config = AutoConfig.from_pretrained(model, _from_pipeline=task, **hub_kwargs, **model_kwargs)
+qpmgs 2024-01-11T04:21:50.419Z   File "/app/huggingface_inference_toolkit/handler.py", line 17, in __init__
+qpmgs 2024-01-11T04:21:50.419Z     hf_pipeline = pipeline(task=task, model=model_dir, device=device, **kwargs)
+qpmgs 2024-01-11T04:21:50.419Z   File "/app/huggingface_inference_toolkit/utils.py", line 261, in get_pipeline
+qpmgs 2024-01-11T04:21:50.419Z     self.pipeline = get_pipeline(model_dir=model_dir, task=task)
+qpmgs 2024-01-11T04:21:50.419Z   File "/app/huggingface_inference_toolkit/handler.py", line 45, in get_inference_handler_either_custom_or_default_handler
+qpmgs 2024-01-11T04:21:50.419Z   File "/opt/conda/lib/python3.9/site-packages/starlette/routing.py", line 682, in startup
+qpmgs 2024-01-11T04:21:50.419Z   File "/opt/conda/lib/python3.9/site-packages/starlette/routing.py", line 584, in __aenter__
+qpmgs 2024-01-11T04:21:50.419Z Application startup failed. Exiting.
+qpmgs 2024-01-11T04:21:50.419Z 
+qpmgs 2024-01-11T04:21:50.419Z     raise ValueError(
+qpmgs 2024-01-11T04:21:50.419Z   File "/opt/conda/lib/python3.9/site-packages/transformers/models/auto/configuration_auto.py", line 1007, in from_pretrained
+qpmgs 2024-01-11T04:21:50.419Z   File "/opt/conda/lib/python3.9/site-packages/transformers/pipelines/__init__.py", line 705, in pipeline
+qpmgs 2024-01-11T04:21:50.419Z     await handler()
+qpmgs 2024-01-11T04:21:50.419Z     await self._router.startup()
+qpmgs 2024-01-11T04:22:16.450Z 2024-01-11 04:22:16,450 | INFO | Using device GPU
+qpmgs 2024-01-11T04:22:16.450Z 2024-01-11 04:22:16,450 | INFO | Initializing model from directory:/repository
+qpmgs 2024-01-11T04:22:16.450Z 2024-01-11 04:22:16,450 | INFO | No custom pipeline found at /repository/handler.py
+qpmgs 2024-01-11T04:22:16.451Z     return HuggingFaceHandler(model_dir=model_dir, task=task)
+qpmgs 2024-01-11T04:22:16.451Z   File "/app/webservice_starlette.py", line 57, in some_startup_task
+qpmgs 2024-01-11T04:22:16.451Z   File "/opt/conda/lib/python3.9/site-packages/starlette/routing.py", line 682, in startup
+qpmgs 2024-01-11T04:22:16.451Z   File "/app/huggingface_inference_toolkit/handler.py", line 17, in __init__
+qpmgs 2024-01-11T04:22:16.451Z 
+qpmgs 2024-01-11T04:22:16.451Z     async with self.lifespan_context(app) as maybe_state:
+qpmgs 2024-01-11T04:22:16.451Z Application startup failed. Exiting.
+qpmgs 2024-01-11T04:22:16.451Z     config = AutoConfig.from_pretrained(model, _from_pipeline=task, **hub_kwargs, **model_kwargs)
+qpmgs 2024-01-11T04:22:16.451Z     await handler()
+qpmgs 2024-01-11T04:22:16.451Z   File "/opt/conda/lib/python3.9/site-packages/starlette/routing.py", line 584, in __aenter__
+qpmgs 2024-01-11T04:22:16.451Z     raise ValueError(
+qpmgs 2024-01-11T04:22:16.451Z   File "/opt/conda/lib/python3.9/site-packages/transformers/pipelines/__init__.py", line 705, in pipeline
+qpmgs 2024-01-11T04:22:16.451Z     inference_handler = get_inference_handler_either_custom_or_default_handler(HF_MODEL_DIR, task=HF_TASK)
+qpmgs 2024-01-11T04:22:16.451Z     self.pipeline = get_pipeline(model_dir=model_dir, task=task)
+qpmgs 2024-01-11T04:22:16.451Z     hf_pipeline = pipeline(task=task, model=model_dir, device=device, **kwargs)
+qpmgs 2024-01-11T04:22:16.451Z   File "/app/huggingface_inference_toolkit/handler.py", line 45, in get_inference_handler_either_custom_or_default_handler
+qpmgs 2024-01-11T04:22:16.451Z   File "/opt/conda/lib/python3.9/site-packages/starlette/routing.py", line 705, in lifespan
+qpmgs 2024-01-11T04:22:16.451Z   File "/app/huggingface_inference_toolkit/utils.py", line 261, in get_pipeline
+qpmgs 2024-01-11T04:22:16.451Z   File "/opt/conda/lib/python3.9/site-packages/transformers/models/auto/configuration_auto.py", line 1007, in from_pretrained
+qpmgs 2024-01-11T04:22:16.451Z Traceback (most recent call last):
+qpmgs 2024-01-11T04:22:16.451Z ValueError: Unrecognized model in /repository. Should have a `model_type` key in its config.json, or contain one of the following strings in its name: albert, align, altclip, audio-spectrogram-transformer, autoformer, bark, bart, beit, bert, bert-generation, big_bird, bigbird_pegasus, biogpt, bit, blenderbot, blenderbot-small, blip, blip-2, bloom, bridgetower, camembert, canine, chinese_clip, clap, clip, clipseg, codegen, conditional_detr, convbert, convnext, convnextv2, cpmant, ctrl, cvt, data2vec-audio, data2vec-text, data2vec-vision, deberta, deberta-v2, decision_transformer, deformable_detr, deit, deta, detr, dinat, distilbert, donut-swin, dpr, dpt, efficientformer, efficientnet, electra, encodec, encoder-decoder, ernie, ernie_m, esm, falcon, flaubert, flava, fnet, focalnet, fsmt, funnel, git, glpn, gpt-sw3, gpt2, gpt_bigcode, gpt_neo, gpt_neox, gpt_neox_japanese, gptj, gptsan-japanese, graphormer, groupvit, hubert, ibert, imagegpt, informer, instructblip, jukebox, layoutlm, layoutlmv2, layoutlmv3, led, levit, lilt, llama, longformer, longt5, luke, lxmert, m2m_100, marian, markuplm, mask2former, maskformer, maskformer-swin, mbart, mctct, mega, megatron-bert, mgp-str, mobilebert, mobilenet_v1, mobilenet_v2, mobilevit, mobilevitv2, mpnet, mra, mt5, musicgen, mvp, nat, nezha, nllb-moe, nystromformer, oneformer, open-llama, openai-gpt, opt, owlvit, pegasus, pegasus_x, perceiver, pix2struct, plbart, poolformer, prophetnet, qdqbert, rag, realm, reformer, regnet, rembert, resnet, retribert, roberta, roberta-prelayernorm, roc_bert, roformer, rwkv, sam, segformer, sew, sew-d, speech-encoder-decoder, speech_to_text, speech_to_text_2, speecht5, splinter, squeezebert, swiftformer, swin, swin2sr, swinv2, switch_transformers, t5, table-transformer, tapas, time_series_transformer, timesformer, timm_backbone, trajectory_transformer, transfo-xl, trocr, tvlt, umt5, unispeech, unispeech-sat, upernet, van, videomae, vilt, vision-encoder-decoder, vision-text-dual-encoder, visual_bert, vit, vit_hybrid, vit_mae, vit_msn, vivit, wav2vec2, wav2vec2-conformer, wavlm, whisper, xclip, xglm, xlm, xlm-prophetnet, xlm-roberta, xlm-roberta-xl, xlnet, xmod, yolos, yoso
+qpmgs 2024-01-11T04:22:16.451Z     await self._router.startup()

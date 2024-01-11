@@ -1,0 +1,29 @@
+python benchmarks/benchmark_generation_mamba_simple.py --model-name "state-spaces/mamba-2.8b" --prompt "My cat wrote all this CUDA code for a new language model and" --topp 0.9 --temperature 0.7 --repetition-penalty 1.2
+
+
+
+
+
+# Make sure you have git-lfs installed (https://git-lfs.com)
+git lfs install
+git clone https://huggingface.co/spaces/reach-vb/mamba
+
+# if you want to clone without large files – just their pointers
+# prepend your git clone with the following env var:
+GIT_LFS_SKIP_SMUDGE=1
+
+
+
+
+Run this Space locally
+This Space is best run on a GPU, so please ensure you have nvidia-docker2 installed. Installation guide
+
+docker run -it -p 7860:7860 --platform=linux/amd64 --gpus all \
+	registry.hf.space/reach-vb-mamba:latest
+Available versions
+
+You need to switch on the new containerd engine in Docker for pulling and storing images. This will be the new Docker default in the future. Read more
+
+
+
+
